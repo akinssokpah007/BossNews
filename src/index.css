@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.1), 0 0 10px rgba(139, 92, 246, 0.2);
+  }
+  to {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2), 0 0 20px rgba(139, 92, 246, 0.4);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  overflow-y: scroll;
+}
+
+/* Custom Scrollbar for a luxurious feel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Glassmorphism utility classes */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Modern gradient border cards */
+.gradient-card {
+  position: relative;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(240,240,240,0.6));
+  transition: all 0.3s ease;
+}
+
+.dark .gradient-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+}
+
+/* Premium text and heading sizing */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+/* Rich Text Content Styling (for articles) */
+.article-rich-text h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  color: #1e293b;
+}
+
+.dark .article-rich-text h2 {
+  color: #f8fafc;
+}
+
+.article-rich-text h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #334155;
+}
+
+.dark .article-rich-text h3 {
+  color: #e2e8f0;
+}
+
+.article-rich-text p {
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: #475569;
+}
+
+.dark .article-rich-text p {
+  color: #cbd5e1;
+}
+
+.article-rich-text ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.article-rich-text ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.article-rich-text li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+  font-size: 1.05rem;
+  color: #475569;
+}
+
+.dark .article-rich-text li {
+  color: #cbd5e1;
+}
+
+.article-rich-text blockquote {
+  border-left: 4px solid #8b5cf6;
+  padding-left: 1.25rem;
+  font-style: italic;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+}
+
+.dark .article-rich-text blockquote {
+  color: #e2e8f0;
+}
+
+.article-rich-text hr {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-color: #e2e8f0;
+}
+
+.dark .article-rich-text hr {
+  border-color: #334155;
+}

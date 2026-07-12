@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helper Functions ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function userExists() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function isAdmin() {
+      return isSignedIn() && userExists() && getUserData().role == 'admin';
+    }
+
+    function isEditor() {
+      return isSignedIn() && userExists() && (getUserData().role == 'editor' || getUserData().role == 'admin');
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Collection Rules ---
+
+    // 1. Users
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && userId == request.auth.uid && (
+        (request.auth.token.email == 'makealuckspam@gmail.com' && incoming().role == 'admin') ||
+        (incoming().role == 'editor' || incoming().role == 'viewer')
+      );
+      allow update: if isSignedIn() && userId == request.auth.uid && (
+        incoming().role == existing().role || 
+        isAdmin()
+      );
+      allow delete: if isAdmin();
+    }
+
+    // 2. Articles
+    match /articles/{articleId} {
+      allow read: if true; // anyone can view published/public articles or we can check status
+      allow create: if isEditor() && incoming().id == articleId;
+      allow update: if isEditor() && incoming().id == existing().id;
+      allow delete: if isAdmin();
+    }
+
+    // 3. Categories
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isEditor();
+    }
+
+    // 4. Tags
+    match /tags/{tagId} {
+      allow read: if true;
+      allow write: if isEditor();
+    }
+
+    // 5. Activity Logs
+    match /activityLogs/{logId} {
+      allow read: if isEditor();
+      allow create: if isEditor() && incoming().userId == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // 6. Products (Marketplace)
+    match /products/{productId} {
+      allow read: if true;
+      allow create: if isSignedIn() && incoming().id == productId;
+      allow update: if isSignedIn() && (existing().sellerEmail == request.auth.token.email || isAdmin());
+      allow delete: if isSignedIn() && (existing().sellerEmail == request.auth.token.email || isAdmin());
+    }
+  }
+}

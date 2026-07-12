@@ -1,0 +1,130 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Represents a user's registration and permissions profile.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique identifier for the user." },
+        "email": { "type": "string", "description": "Email address of the user." },
+        "displayName": { "type": "string", "description": "Display name of the user." },
+        "role": { "type": "string", "enum": ["admin", "editor", "viewer"], "description": "Security role assigned to the user." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp." }
+      },
+      "required": ["uid", "email", "role", "createdAt"]
+    },
+    "Article": {
+      "title": "Article",
+      "description": "A news article posted on the portal.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "minLength": 3, "maxLength": 500 },
+        "subtitle": { "type": "string" },
+        "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "content": { "type": "string" },
+        "author": { "type": "string" },
+        "authorEmail": { "type": "string" },
+        "country": { "type": "string" },
+        "region": { "type": "string" },
+        "category": { "type": "string" },
+        "tags": { "type": "array" },
+        "featured": { "type": "boolean" },
+        "breaking": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["draft", "published", "scheduled"] },
+        "publishedAt": { "type": "string" },
+        "scheduledAt": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "metaTitle": { "type": "string" },
+        "metaDescription": { "type": "string" },
+        "views": { "type": "number" }
+      },
+      "required": ["id", "title", "slug", "content", "author", "country", "region", "category", "tags", "featured", "breaking", "status", "publishedAt", "views"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "A category category grouping news articles.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "name", "slug"]
+    },
+    "Tag": {
+      "title": "Tag",
+      "description": "A tag used for categorization of articles.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" }
+      },
+      "required": ["id", "name", "slug"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Auditing log for admin actions.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "action": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "userId", "userEmail", "action", "timestamp"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "A marketplace product listing.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "currency": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "category": { "type": "string" },
+        "condition": { "type": "string", "enum": ["new", "used", "refurbished", "not_applicable"] },
+        "sellerName": { "type": "string" },
+        "sellerPhone": { "type": "string" },
+        "sellerWhatsApp": { "type": "string" },
+        "sellerEmail": { "type": "string" },
+        "status": { "type": "string", "enum": ["available", "sold", "archived"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title", "description", "price", "currency", "category", "condition", "sellerName", "sellerPhone", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Users of the platform."
+    },
+    "articles/{articleId}": {
+      "schema": "Article",
+      "description": "All news articles on the platform."
+    },
+    "categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Article categories."
+    },
+    "tags/{tagId}": {
+      "schema": "Tag",
+      "description": "Tags."
+    },
+    "activityLogs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "Audit trails for logging editor/admin updates."
+    },
+    "products/{productId}": {
+      "schema": "Product",
+      "description": "Marketplace listings."
+    }
+  }
+}

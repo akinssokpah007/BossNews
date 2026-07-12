@@ -1,0 +1,6 @@
+{
+  "name": "Boss News",
+  "description": "A premium global news platform with a secure, feature-rich admin dashboard for publishing articles, categories, and tags.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
